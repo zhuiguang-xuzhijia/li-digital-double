@@ -184,6 +184,39 @@ def 发现(重算=False, 打印=False):
     return 出
 
 
+def 补上一轮(对方下一句, 基线=14.0, 还在=True):
+    r"""对方又说话了 → 上一轮的后果有着落了。找最后一条待补的回填。"""
+    d = _读()
+    for i in range(len(d["轮"]) - 1, -1, -1):
+        if d["轮"][i].get("待补"):
+            d["轮"][i]["表现"] = 对方后果(对方下一句, 基线, 还在)
+            d["轮"][i]["待补"] = False
+            _写(d)
+            return d["轮"][i]
+    return None
+
+
+def 周报(当=None):
+    r"""每周跑一次发现，把新登记的维度记进日志（带时间，便于回看"它什么时候自己长出了什么"）。"""
+    import time as _t
+    现在 = _t.time() if 当 is None else float(当)
+    路 = os.path.join(本, "数据", "发现日志.json")
+    try:
+        旧 = json.load(open(路, encoding="utf-8"))
+    except Exception:
+        旧 = []
+    上 = float(旧[-1]["时"]) if 旧 else 0.0
+    if 现在 - 上 < 7 * 86400:
+        return None
+    果 = 发现(重算=True)
+    条 = {"时": 现在, "日": _t.strftime("%Y-%m-%d %H:%M", _t.localtime(现在)),
+          "轮数": len(_读()["轮"]), "维度": 果}
+    旧.append(条)
+    os.makedirs(os.path.dirname(路), exist_ok=True)
+    json.dump(旧[-26:], open(路, "w", encoding="utf-8"), ensure_ascii=False, indent=1)
+    return 条
+
+
 def 现有():
     d = _读()
     return d.get("维度") or []
