@@ -85,6 +85,20 @@ python3 实验_真实语料.py       # 真实对话检索实验（含置换检�
 }
 ```
 
+## 外部工具（只推荐，不打包）
+
+论文写作时用了两个工具做体检。**代码没有放进本仓库**——原仓库没有声明许可证，
+默认保留所有权利，不能再分发。
+
+| 工具 | 用途 | 安装 |
+|---|---|---|
+| [lucia-trend/de-ai-flavor](https://github.com/lucia-trend/de-ai-flavor) | 把 AI 味拆成七类可定位病征 + 量化扫描器 | `npx skills@latest add lucia-trend/de-ai-flavor` |
+| [op7418/Humanizer-zh](https://github.com/op7418/Humanizer-zh) | 中文去 AI 味（英文 Humanizer 的汉化版） | 见仓库 README |
+
+用它扫本仓库的论文，扫出来的真问题不是文体，是**校对**：
+同一个文件的行数，在摘要、附录、README 里写了三个不同的数（100 / 180 / 实际 246）。
+这类错误比 AI 味严重——因为它会被人当证据引。
+
 ## 许可证
 
 论文文本 CC BY 4.0，代码 MIT。详见 [LICENSE.md](LICENSE.md)。
